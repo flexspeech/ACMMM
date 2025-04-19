@@ -7,7 +7,7 @@
 
 
   <!-- Begin Jekyll SEO tag v2.7.1 -->
-  <title>StreamFlow: Streaming Flow Matching with Block-wise Guided Attention Mask for Speech Token Decoding</title>
+  <title>FlexSpeech: Towards Stable, Controllable and Expressive Text-to-Speech</title>
   <meta name="generator" content="Jekyll v3.9.0">
   <meta property="og:title" content="title">
   <meta property="og:locale" content="en_US">
@@ -41,36 +41,42 @@
 
   <section class="main-content">
     <h1 id="">
-      <center>StreamFlow: Streaming Flow Matching with Block-wise Guided Attention Mask for Speech Token Decoding</center>
+      <center>FlexSpeech: Towards Stable, Controllable and Expressive Text-to-Speech</center>
     </h1>
 
     <h3 id="">
-      <center>A work submitted to INTERSPEECH 2024</center>
+      <center>A work submitted to ACMMM 2025</center>
     </h3>
 
 
 
     <br><br>
     <h2 id="abstract">1. Abstract<a name="abstract"></a></h2>
-    <p>Recent advancements in discrete token-based speech generation have highlighted the importance of token-to-waveform
-    generation for audio quality, particularly in real-time interactions. Traditional frameworks integrating semantic tokens
-    with flow matching (FM) struggle with streaming capabilities due to their reliance on a global receptive field.
-    Additionally, directly implementing token-by-token streaming speech generation often results in degraded audio quality.
-    To address these challenges, we propose StreamFlow, a novel neural architecture that facilitates streaming flow
-    matching with diffusion transformers (DiT). To mitigate the long-sequence extrapolation issues arising from lengthy
-    historical dependencies, we have designed a local block-wise receptive field strategy. Specifically, the sequence is
-    first segmented into blocks, and we introduce block-wise attention masks that enable the current block to receive
-    information from the previous or subsequent block. These attention masks are combined hierarchically across different
-    DiT-blocks to regulate the receptive field of DiTs.
-    Both subjective and objective experimental results demonstrate that our approach achieves performance comparable to
-    non-streaming methods while surpassing other streaming methods in terms of speech quality, all the while effectively
-    managing inference time during long-sequence generation. Furthermore, our method achieves a notable first-packet latency
-    of only 180 ms.</p>
+    <p>Current speech generation research can be categorized into two primary classes: non-autoregressive (NAR) and 
+      autoregressive (AR). The fundamental distinction between these approaches lies in the duration prediction strategy
+      employed for predictable-length sequences. The NAR methods ensure stability in speech generation by explicitly and 
+      independently modeling the duration of each phonetic unit. Conversely, AR methods employ an autoregressive paradigm to 
+      predict the compressed speech token by implicitly modeling duration with Markov properties. Although this approach improves 
+      prosody, it does not provide the structural guarantees necessary for stability. To simultaneously address the issues of 
+      stability and naturalness in speech generation, we propose FlexSpeech, a stable, controllable, and expressive TTS model. 
+      The motivation behind FlexSpeech is to incorporate Markov dependencies and preference optimization directly on the duration 
+      predictor to boost its naturalness while maintaining explicit modeling of the phonetic units to ensure stability. 
+      Specifically, we decompose the speech generation task into two components: an AR duration predictor and a NAR acoustic 
+      model. The acoustic model is trained on a substantial amount of data to learn to render audio more stably, given reference 
+      audio prosody and phone durations. The duration predictor is optimized in a lightweight manner for different stylistic 
+      variations, thereby enabling rapid style transfer while maintaining a decoupled relationship with the specified speaker timbre.
+      Experimental results demonstrate that our approach achieves SOTA stability and naturalness in zero-shot TTS. More importantly, 
+      when transferring to a specific stylistic domain, we can accomplish lightweight optimization of the duration module solely with 
+      about 100 data samples, without the need to adjust the acoustic model, thereby enabling rapid and stable style transfer.</p>
     <br><br>
 
         <center><img src='raw/fig/overall.png' width="70%"></center>
         <br><br>
-        <center><span><b>Figure 1. Overview of our framework</b></span></center>
+        <center><span><b>Figure 1. Overview of FlexSpeech. (a). The architecture of FlexSpeech acoustic model. 
+          The phoneme embeddings, repeated speaker embeddings, and random noise are concatenated along the channel 
+          dimension to form the input to the model, which then predicts a mel-spectrogram of the same length. 
+          (b). Duration model and preference alignment. The decoder predicts current phoneme duration in an 
+          autoregressive manner, based on the hidden state and previous phoneme durations.</b></span></center>
 
     <br><br>
 
