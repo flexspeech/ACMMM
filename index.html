@@ -20,13 +20,11 @@
   <style>
         .method {
             display: inline-block;
-/*             width: 120px; /* Adjust the width as needed */ */
             font-weight: bold;
         }
 
         .explanation {
             display: inline-block;
-/*             margin-left: 20px; /* Adjust the margin as needed */ */
         }
     </style>
 </head>
@@ -81,59 +79,194 @@
     <br><br>
 
 
-    <h2>2. Demos <a name="Comparison"></a></h2>
-    <!-- <p>Methods</p>
-    <ul>
-      <li><b><a href="https://github.com/fishaudio/Bert-VITS2">VITS : </a></b>a VITS2 with multilingual BERT<sup>1</sup></li> 
-      <li><b>TACA-VITS : </b>A Text-Aware and Context-Aware VITS</li>
-      <li><b>LM : </b>A LM with Hubert token</li>        
-      <li><b>TACA-VITS : </b> A Text-Aware and Context-Aware LM-based TTS</li>
-
-
-    </ul> -->
+    <h2>2. Comparison with Baselines <a name="Comparison"></a></h2>
 
     <table>
       <tbody id="tbody_speech">
       </tbody>
     </table>
 
+    <h2>3. Zero-shot Voice Cloning <a name="zero-shot"></a></h2>
+    <table>
+      <tbody id="tbody_new_comparison">
+      </tbody>
+    </table>
 
+    <h2>4. Rapid Style Transfer <a name="style-transfer"></a></h2>
+    <table>
+      <tbody id="rapid_style_transfer">
+      </tbody>
+    </table>
+
+
+    <h2>5. Controllability <a name="Controllability"></a></h2>
+    <table>
+      <tbody id="tbody_custom">
+        <!-- 表头 -->
+        <tr>
+          <td style="text-align: center; width: 33%;"><strong> </strong></td>
+          <td style="text-align: center; width: 33%;"><strong> </strong></td>
+          <td style="text-align: center; width: 33%;"><strong> </strong></td>
+        </tr>
+        <!-- 第一行：audio方式 -->
+        <tr>
+          <td style="text-align: center"><audio style="width: 100%;" controls="" src="./raw/samples/model1/1.wav"></audio></td>
+          <td style="text-align: center"><audio style="width: 100%;" controls="" src="./raw/samples/model2/1.wav"></audio></td>
+          <td style="text-align: center"><audio style="width: 100%;" controls="" src="./raw/samples/model3/1.wav"></audio></td>
+        </tr>
+        <!-- 第二行：图片 -->
+        <tr>
+          <td style="text-align: center"><img src="./raw/images/image1.png" width="100%"></td>
+          <td style="text-align: center"><img src="./raw/images/image2.png" width="100%"></td>
+          <td style="text-align: center"><img src="./raw/images/image3.png" width="100%"></td>
+        </tr>
+      </tbody>
+    </table>
 
 </html>
 
-<script type="" text/javascript>
+
+
+
+
+<script type="text/javascript">
   function short_form() {
     let scenes = [
-      [0],[1],[2],[3],[4],[5]
-          ]
-    let models = ["UNet-CV(Non-Streaming)", "DiT-CV(Non-Streaming)",  "DiT-CVS", "StreamFlow-SR","StreamFlow-LR"]
-    short_data = ""
+      [0], [1], [2], [3], [4], [5], [6], [7]
+    ];
+    let models = ["prompt speech", "FlexSpeech", "F5-TTS", "MaskGCT", "CosyVoice", "FireRedTTS"];
+    let texts = [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+    ];
+    let short_data = "";
+
+    // 生成表头
+    short_data += '<tr>';
+    short_data += '<td style="text-align: center; width: 14%;"><strong>Text</strong></td>'; // 新增文本列
     for (const id in models) {
-      model = models[id]
-  
-      short_data += '<td style="text-align: center; width: 14%;" rowspan=1><strong>' + model  + '<strong></td>'
+      let model = models[id];
+      short_data += '<td style="text-align: center; width: 14%;" rowspan="1"><strong>' + model + '</strong></td>';
     }
-    short_data += `</tr>`
-    
+    short_data += '</tr>';
+
+    // 生成表格内容
     for (let x in scenes) {
-      let scene = scenes[x]
-      let file = scene[0]
-      let scene_data = ""
+      let scene = scenes[x];
+      let file = scene[0];
+      let scene_data = "";
 
-      scene_data += '<tr>'
+      scene_data += '<tr>';
+      scene_data += '<td style="text-align: center"> ' + texts[x] + '</td>'; // 文本内容
       for (let z in models) {
-        let model = models[z]
-        scene_data += '<td style="text-align: center"><audio style="width: 100%;" controls="" src="' + './raw/samples/' + model + '/' + file + '.wav' + '"></audio></td>'
-        
+        let model = models[z];
+        scene_data += '<td style="text-align: center"><audio style="width: 100%;" controls="" src="' + './raw/samples/' + model + '/' + file + '.wav' + '"></audio></td>';
       }
-      scene_data += '</tr>'
-      short_data += scene_data
+      scene_data += '</tr>';
+      short_data += scene_data;
     }
-    return short_data
-  }
-    window.onload = function () {
-    document.getElementById('tbody_speech').innerHTML = short_form()
-  }
- 
-</script> 
 
+    return short_data;
+  }
+
+  function new_comparison_form() {
+    let new_scenes = [
+      [11], [12], [13], [14], [15], [16]
+    ];
+    let new_models = ["prompt speech", "FlexSpeech Generated"];
+    let new_texts = [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+    ];
+    let new_data = "";
+
+    // 生成表头
+    new_data += '<tr>';
+    new_data += '<td style="text-align: center; width: 14%;"><strong>Text</strong></td>'; // 新增文本列
+    for (const id in new_models) {
+      let model = new_models[id];
+      new_data += '<td style="text-align: center; width: 14%;" rowspan="1"><strong>' + model + '</strong></td>';
+    }
+    new_data += '</tr>';
+
+    // 生成表格内容
+    for (let x in new_scenes) {
+      let scene = new_scenes[x];
+      let file = scene[0];
+      let scene_data = "";
+
+      scene_data += '<tr>';
+      scene_data += '<td style="text-align: center">' + new_texts[x] + '</td>'; // 文本内容
+      for (let z in new_models) {
+        let model = new_models[z];
+        scene_data += '<td style="text-align: center"><audio style="width: 100%;" controls="" src="' + './raw/samples/' + model + '/' + file + '.wav' + '"></audio></td>';
+      }
+      scene_data += '</tr>';
+      new_data += scene_data;
+    }
+
+    return new_data;
+  }
+
+
+  function style_transfer_form() {
+    let new_scenes = [
+      [21], [22], [23], [24], [25], [26], [27], [28]
+    ];
+    let new_models = ["style prompt speech", "timbre reference speaker", "FlexSpeech Generated" ];
+    let new_texts = [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+    ];
+    let new_data = "";
+
+    // 生成表头
+    new_data += '<tr>';
+    new_data += '<td style="text-align: center; width: 14%;"><strong>Text</strong></td>'; // 新增文本列
+    for (const id in new_models) {
+      let model = new_models[id];
+      new_data += '<td style="text-align: center; width: 14%;" rowspan="1"><strong>' + model + '</strong></td>';
+    }
+    new_data += '</tr>';
+
+    // 生成表格内容
+    for (let x in new_scenes) {
+      let scene = new_scenes[x];
+      let file = scene[0];
+      let scene_data = "";
+
+      scene_data += '<tr>';
+      scene_data += '<td style="text-align: center">' + new_texts[x] + '</td>'; // 文本内容
+      for (let z in new_models) {
+        let model = new_models[z];
+        scene_data += '<td style="text-align: center"><audio style="width: 100%;" controls="" src="' + './raw/samples/' + model + '/' + file + '.wav' + '"></audio></td>';
+      }
+      scene_data += '</tr>';
+      new_data += scene_data;
+    }
+
+    return new_data;
+  }
+
+  window.onload = function () {
+    document.getElementById('tbody_speech').innerHTML = short_form();
+    document.getElementById('tbody_new_comparison').innerHTML = new_comparison_form();
+    document.getElementById('rapid_style_transfer').innerHTML = style_transfer_form();
+  }
+</script>
